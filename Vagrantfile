@@ -2,9 +2,9 @@
 # vi: set ft=ruby :
 
 # Config Github Settings
-github_username = "fideloper"
+github_username = "mjurinci"
 github_repo     = "Vaprobash"
-github_branch   = "1.1.0"
+github_branch   = "master"
 github_url      = "https://raw.githubusercontent.com/#{github_username}/#{github_repo}/#{github_branch}"
 
 # Server Configuration
@@ -30,7 +30,7 @@ server_timezone  = "UTC"
 # Database Configuration
 mysql_root_password   = "root"   # We'll assume user "root"
 mysql_version         = "5.5"    # Options: 5.5 | 5.6
-mysql_enable_remote   = "false"  # remote access enabled when true
+mysql_enable_remote   = "true"  # remote access enabled when true
 pgsql_root_password   = "root"   # We'll assume user "root"
 mongo_enable_remote   = "false"  # remote access enabled when true
 
@@ -88,11 +88,10 @@ Vagrant.configure("2") do |config|
   # Create a static IP
   config.vm.network :private_network, ip: server_ip
 
-  # Use NFS for the shared folder
-  config.vm.synced_folder ".", "/vagrant",
-            id: "core",
-            :nfs => true,
-            :mount_options => ['nolock,vers=3,udp,noatime']
+  # Shared folder
+    config.vm.synced_folder "../../Projects", "/home/vagrant/projects" , create: true
+    config.vm.synced_folder ".", "/vagrant", disabled: true
+
 
   # If using VirtualBox
   config.vm.provider :virtualbox do |vb|
@@ -101,6 +100,9 @@ Vagrant.configure("2") do |config|
 
     # Set server memory
     vb.customize ["modifyvm", :id, "--memory", server_memory]
+
+    # Set symlink creation
+    #vb.customize ["setextradata", :id, "VBoxInternal2/SharedFoldersEnableSymlinksCreate/v-root", "1"]
 
     # Set the timesync threshold to 10 seconds, instead of the default 20 minutes.
     # If the clock gets more than 15 minutes out of sync (due to your laptop going
@@ -174,7 +176,7 @@ Vagrant.configure("2") do |config|
   ##########
 
   # Provision Apache Base
-  # config.vm.provision "shell", path: "#{github_url}/scripts/apache.sh", args: [server_ip, public_folder, hostname, github_url]
+   config.vm.provision "shell", path: "#{github_url}/scripts/apache.sh", args: [server_ip, public_folder, hostname, github_url]
 
   # Provision Nginx Base
   # config.vm.provision "shell", path: "#{github_url}/scripts/nginx.sh", args: [server_ip, public_folder, hostname, github_url]
@@ -185,7 +187,7 @@ Vagrant.configure("2") do |config|
   ##########
 
   # Provision MySQL
-  # config.vm.provision "shell", path: "#{github_url}/scripts/mysql.sh", args: [mysql_root_password, mysql_version, mysql_enable_remote]
+   config.vm.provision "shell", path: "#{github_url}/scripts/mysql.sh", args: [mysql_root_password, mysql_version, mysql_enable_remote]
 
   # Provision PostgreSQL
   # config.vm.provision "shell", path: "#{github_url}/scripts/pgsql.sh", args: pgsql_root_password
