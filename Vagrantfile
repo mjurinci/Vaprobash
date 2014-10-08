@@ -89,8 +89,8 @@ Vagrant.configure("2") do |config|
   config.vm.network :private_network, ip: server_ip
 
   # Shared folder
-    config.vm.synced_folder "../../Projects", "/home/vagrant/projects" , create: true
-    config.vm.synced_folder ".", "/vagrant", disabled: true
+    config.vm.synced_folder "../../Projects", "/vagrant" , create: true
+    #config.vm.synced_folder ".", "/vagrant", disabled: true
 
 
   # If using VirtualBox
