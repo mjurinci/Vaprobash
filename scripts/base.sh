@@ -11,7 +11,7 @@ echo "export LANG=C.UTF-8" >> /home/vagrant/.bashrc
 echo ">>> Installing Base Packages"
 
 if [[ -z $1 ]]; then
-    github_url="https://raw.githubusercontent.com/fideloper/Vaprobash/master"
+    github_url="https://raw.githubusercontent.com/mjurinci/Vaprobash/master"
 else
     github_url="$1"
 fi

@@ -22,7 +22,7 @@ else
 fi
 
 if [[ -z $4 ]]; then
-    github_url="https://raw.githubusercontent.com/fideloper/Vaprobash/master"
+    github_url="https://raw.githubusercontent.com/mjurinci/Vaprobash/master"
 else
     github_url="$4"
 fi
@@ -46,10 +46,10 @@ echo ">>> Configuring Apache"
 sudo usermod -a -G www-data vagrant
 
 # Apache Config
-# On separate lines since some may cause an error 
+# On separate lines since some may cause an error
 # if not installed
 sudo a2dismod mpm_prefork
-sudo a2dismod php5 
+sudo a2dismod php5
 sudo a2enmod mpm_worker rewrite actions ssl
 curl --silent -L $github_url/helpers/vhost.sh > vhost
 sudo chmod guo+x vhost
